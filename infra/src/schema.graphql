@@ -1,0 +1,8 @@
+type User @model @auth(rules: [{ allow: owner, ownerField: "id" }]) {
+  id: ID! @primaryKey
+  name: String!
+  email: AWSEmail!
+  phone: AWSPhone
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}

@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "transform": {
+      "implementation": "./impl",
+      "schema": "./schema.json",
+      "description": "Runs AWS Amplify GraphQL generation to build the CloudFormation templates based on schema provided"
+    }
+  }
+}

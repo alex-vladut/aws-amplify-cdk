@@ -3,6 +3,13 @@
   "sourceRoot": "infra/src",
   "projectType": "application",
   "targets": {
+    "graphql-transform": {
+      "executor": "./tools/executors/graphql:transform",
+      "options": {
+        "schemaPath": "infra/src",
+        "outputPath": "dist/infra/build"
+      }
+    },
     "build": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],

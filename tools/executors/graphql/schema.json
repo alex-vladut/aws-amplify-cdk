@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "cli": "nx",
+  "properties": {
+    "schemaPath": {
+      "type": "string",
+      "description": "Path where the GraphQL schema files are located"
+    },
+    "outputPath": {
+      "type": "string",
+      "description": "Output path where generated resources will be dumped"
+    }
+  }
+}

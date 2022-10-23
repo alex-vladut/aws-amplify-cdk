@@ -1,0 +1,23 @@
+schema:
+  - ../../schema.graphql # 👈 run "nx run infra:graphql-transform" for the AppSync GraphQL schema to be generated
+  - ../../appsync.graphql # 👈 used by @graphql-codegen/cli to handle AppSync custom scalars
+
+documents:
+  - '**/*.graphql'
+  - '../../libs/**/*.graphql'
+
+plugins:
+  - typescript-operations
+  - typed-document-node
+
+config:
+  scalars:
+    AWSJSON: string
+    AWSDate: string
+    AWSTime: string
+    AWSDateTime: string
+    AWSTimestamp: number
+    AWSEmail: string
+    AWSURL: string
+    AWSPhone: string
+    AWSIPAddress: string

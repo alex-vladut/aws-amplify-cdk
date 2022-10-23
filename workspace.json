@@ -1,6 +1,8 @@
 {
   "version": 2,
   "projects": {
+    "api": "libs/api",
+    "data-types": "libs/data-types",
     "infra": "infra",
     "todo": "apps/todo",
     "todo-e2e": "apps/todo-e2e"

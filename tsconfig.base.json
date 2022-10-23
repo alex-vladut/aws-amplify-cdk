@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@aws-amplify-cdk/api": ["libs/api/src/index.ts"],
+      "@aws-amplify-cdk/data-types": ["libs/data-types/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

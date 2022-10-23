@@ -5,10 +5,22 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "gql": "nx reset && npm run gql:transform && npm run gql:compile && npm run gql:codegen",
+    "gql:transform": "nx run infra:graphql-transform",
+    "gql:codegen": "graphql-codegen --config .graphqlrc.yml",
+    "gql:compile": "graphql-let --config .graphql-let.yml"
   },
   "private": true,
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.13.7",
+    "@graphql-codegen/import-types-preset": "^2.2.5",
+    "@graphql-codegen/typed-document-node": "^2.3.5",
+    "@graphql-codegen/typescript": "^2.7.5",
+    "@graphql-codegen/typescript-operations": "^2.5.5",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.5",
+    "@graphql-eslint/eslint-plugin": "^3.12.0",
+    "@graphql-typed-document-node/core": "^3.1.1",
     "@nrwl/cli": "15.0.1",
     "@nrwl/cypress": "15.0.1",
     "@nrwl/eslint-plugin-nx": "15.0.1",
@@ -45,6 +57,7 @@
     "typescript": "4.8.4"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.0",
     "@aws-amplify/amplify-category-api": "^4.0.5",
     "@aws-amplify/graphql-auth-transformer": "^1.1.0",
     "@aws-amplify/graphql-default-value-transformer": "^0.7.0",
@@ -63,9 +76,13 @@
     "core-js": "^3.6.5",
     "express": "^4.17.3",
     "fs-extra": "^10.0.1",
+    "graphql": "^14.7.0",
+    "graphql-config": "^4.3.6",
+    "graphql-let": "^0.18.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "regenerator-runtime": "0.13.7",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "webpack-merge": "^5.8.0"
   }
 }

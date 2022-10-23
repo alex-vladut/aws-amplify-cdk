@@ -41,3 +41,8 @@ Thumbs.db
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+## graphql-let
+*.graphql.d.ts
+*.graphqls.d.ts
+/.cache

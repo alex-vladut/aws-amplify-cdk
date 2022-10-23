@@ -1,7 +1,9 @@
 {
   "version": 2,
   "projects": {
-    "infra": "infra"
+    "infra": "infra",
+    "todo": "apps/todo",
+    "todo-e2e": "apps/todo-e2e"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

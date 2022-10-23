@@ -1,5 +1,5 @@
 {
-  "root": "infra",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "infra/src",
   "projectType": "application",
   "targets": {
@@ -11,13 +11,15 @@
       }
     },
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/infra",
         "main": "infra/src/main.ts",
         "tsConfig": "infra/tsconfig.app.json",
-        "assets": ["infra/src/assets"]
+        "assets": ["infra/src/assets"],
+        "target": "node",
+        "compiler": "tsc"
       },
       "configurations": {
         "production": {
@@ -34,7 +36,7 @@
       }
     },
     "serve": {
-      "executor": "@nrwl/node:execute",
+      "executor": "@nrwl/node:node",
       "options": {
         "buildTarget": "infra:build"
       }
@@ -48,9 +50,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/infra"],
+      "outputs": ["{workspaceRoot}/coverage/infra"],
       "options": {
-        "jestConfig": "infra/jest.config.js",
+        "jestConfig": "infra/jest.config.ts",
         "passWithNoTests": true
       }
     }

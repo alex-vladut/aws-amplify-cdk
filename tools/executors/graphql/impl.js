@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob');
 
+const { FeatureFlags } = require('amplify-cli-core');
 const { AuthTransformer } = require('@aws-amplify/graphql-auth-transformer');
 const {
   DefaultValueTransformer,
@@ -33,9 +34,11 @@ const {
   ConflictHandlerType,
 } = require('@aws-amplify/graphql-transformer-core');
 
+// now exported here:
+// https://github.com/aws-amplify/amplify-cli/blob/59c64224eb722d826952a0a85f68f57ec590255f/packages/amplify-category-api/src/graphql-transformer/utils.ts
 const {
   writeDeploymentToDisk,
-} = require('amplify-provider-awscloudformation/lib/graphql-transformer/utils');
+} = require('@aws-amplify/amplify-category-api/lib/graphql-transformer/utils.js');
 
 const SCHEMA_FILE = 'schema.graphql';
 const SCHEMA_DIRECTORY = 'schema';
@@ -51,9 +54,11 @@ const authConfig = {
   ],
 };
 
+// TODO: it could be useful to check this code on how to setup feature flags
+// https://github.com/aws-amplify/amplify-cli/blob/dev/packages/amplify-cli-core/src/feature-flags/featureFlags.ts
 const featureFlags = {
-  getBoolean() {
-    return true;
+  getBoolean(_, defaultValue) {
+    return defaultValue ?? true;
   },
   getString(_, defaultValue) {
     return defaultValue;
@@ -63,6 +68,9 @@ const featureFlags = {
   },
   getObject() {
     throw new Error('Not implemented');
+  },
+  getValue(featureName, type, defaultValue) {
+    return defaultValue;
   },
 };
 
@@ -168,9 +176,30 @@ exports['default'] = async function graphqlTransformerExecutor(
   const schema = combineSchemas(schemaDocs);
 
   const transformer = await createTransformer(options);
+  const deployment = transformer.transform(schema);
 
+  // This is indirectly called from here:
+  // https://github.com/aws-amplify/amplify-cli/blob/e6586af2b3f541edf426ddea953aad32546c9e91/packages/amplify-cli-core/src/plugin-facade/cloudformation-provider-facade.ts#L36
+  const ctx = {
+    amplify: {
+      getProviderPlugins() {
+        return {
+          awscloudformation: 'amplify-provider-awscloudformation',
+        };
+      },
+    },
+  };
+
+  FeatureFlags.instance = featureFlags;
+
+  // writeDeploymentToDisk was moved out of the amplify-provider-awscloudformation package and now it requires a Context and FeatureFlags to be configured
+  // check this code out in case it is needed to perform this action, but for now it will use an older version of the package which still includes this function
+  // https://github.com/aws-amplify/amplify-cli/blob/master/packages/amplify-cli/src/index.ts#L166
   await writeDeploymentToDisk(
-    transformer.transform(schema),
+    // Context used here:
+    // https://github.com/aws-amplify/amplify-cli/blob/e6586af2b3f541edf426ddea953aad32546c9e91/packages/amplify-cli-core/src/plugin-facade/cloudformation-provider-facade.ts#L36
+    ctx,
+    deployment,
     options.outputPath,
     'appsync.cloudformation.json',
     {}
